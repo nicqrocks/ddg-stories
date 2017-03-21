@@ -1,12 +1,12 @@
 
 use Hiker::Route;
 
-class DDG::Stories::Categories does Hiker::Route {
-  has $.path     = '/';
-  has $.template = 'List.mustache';
-  has $.model    = 'DDG::Stories::Filter';
+class DDG::Stories::Category does Hiker::Route {
+    has $.path     = '/:category';
+    has $.template = 'List.mustache';
+    has $.model    = 'DDG::Stories::Filter';
 
-  method handler($req, $res) {
-    $res.headers<Content-Type> = 'text/plain';
-  }
+    method handler($req, $res) {
+        $res.headers<Content-Type> = 'text/html';
+    }
 }
