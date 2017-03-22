@@ -10,9 +10,12 @@ class DDG::Stories::Filter does Hiker::Model {
         my $category = $req.params<category> // Any;
         $res.data<category> = $category;
         $res.data<stories> = self.get-stories: $category;
+
+        my $bag = self.get-stories.map(*<category>).Bag;
+        $res.data<categories>.append: $bag.kv.map: { (name => $^k.Str, amnt => $^v).Hash };
     }
 
-    method get-stories($category) {
+    method get-stories($category = Any) {
         my HTTP::UserAgent $ua .= new;
         my $res = $ua.get: $!story-url;
 

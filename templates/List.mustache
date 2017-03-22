@@ -7,6 +7,11 @@
 <body>
     <div class="header">
         <h1>DuckDuckGo Stories: {{category}}</h1>
+        <p>
+        {{#categories}}
+        	<a href="/{{name}}">{{name}}({{amnt}})</a>
+        {{/categories}}
+        </p>
     </div>
     <div class="stories">
 
