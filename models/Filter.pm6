@@ -7,7 +7,7 @@ class DDG::Stories::Filter does Hiker::Model {
     has $.story-url = 'https://watrcoolr.duckduckgo.com/watrcoolr.js?o=json';
 
     method bind($req, $res) {
-        my $category = $req.params<category> // Any;
+        my $category = $req.params<category>.Str.subst(/'%20'/, ' ') // Any;
         $res.data<category> = $category;
         $res.data<stories> = self.get-stories: $category;
 
