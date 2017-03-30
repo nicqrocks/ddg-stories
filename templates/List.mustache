@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>DuckDuckGo Stories: {{category}}</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div class="header">
@@ -17,12 +18,16 @@
 
         {{#stories}}
         <div class="story">
-            <img src="{{image}}" alt="image">
-            <a href="{{url}}">
-                <h3>{{title}}</h3>
-                <p>{{description}}</p>
-            </a>
-            <p>Category: {{category}}</p>
+            <div class="image">
+                <img src="{{image}}" alt="image">
+            </div>
+            <div class="text">
+                <a href="{{url}}">
+                    <h3>{{title}}</h3>
+                    <p>{{description}}</p>
+                </a>
+                <p>Category: {{category}}</p>
+            </div>
         </div>
         {{/stories}}
 
