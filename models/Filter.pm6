@@ -7,12 +7,16 @@ class DDG::Stories::Filter does Hiker::Model {
     has $.story-url = 'https://watrcoolr.duckduckgo.com/watrcoolr.js?o=json';
 
     method bind($req, $res) {
-        my $category = $req.params<category>.Str.subst(/'%20'/, ' ') // Any;
+        my $category = $req.params<category> // Any;
+        unless $category.isa(Any) {
+            $category .= Str.subst(/'%20'/, ' ');
+        }
         $res.data<category> = $category;
         $res.data<stories> = self.get-stories: $category;
 
         my $bag = self.get-stories.map(*<category>).Bag;
-        $res.data<categories>.append: $bag.kv.map: { (name => $^k.Str, amnt => $^v).Hash };
+        $res.data<categories>.append:
+            $bag.kv.map: { (name => $^k.Str, amnt => $^v).Hash };
     }
 
     method get-stories($category = Any) {
