@@ -5,6 +5,7 @@ use HTTP::UserAgent;
 
 class DDG::Stories::Filter does Hiker::Model {
     has $.story-url = 'https://watrcoolr.duckduckgo.com/watrcoolr.js?o=json';
+    has @.posts;
 
     method bind($req, $res) {
         my $category = $req.params<category> // Any;
@@ -20,10 +21,11 @@ class DDG::Stories::Filter does Hiker::Model {
     }
 
     method get-stories($category = Any) {
-        my HTTP::UserAgent $ua .= new;
-        my $res = $ua.get: $!story-url;
+        unless @!posts {
+            my $res = HTTP::UserAgent.new.get: $!story-url;
+            @!posts = (from-json $res.decoded-content).List;
+        }
 
-        my @posts = (from-json $res.decoded-content).List;
-        return @posts.grep({$_<category> ~~ $category}).List;
+        return @!posts.grep({$_<category> ~~ $category}).List;
     }
 }
