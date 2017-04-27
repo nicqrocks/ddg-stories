@@ -8,11 +8,11 @@ class DDG::Stories::Filter does Hiker::Model {
     has @.posts;
 
     method bind($req, $res) {
-        my $category = $req.params<category> // Any;
-        unless $category.isa(Any) {
-            $category .= Str.subst(/'%20'/, ' ');
+        my Any $category = $req.params<category>;
+        if $category.defined {
+            $category = $category.gist.subst(/'%20'/, ' ');
         }
-        $res.data<category> = $category;
+        $res.data<category> = $category.gist;
         $res.data<stories> = self.get-stories: $category;
 
         my $bag = self.get-stories.map(*<category>).Bag;
@@ -28,4 +28,5 @@ class DDG::Stories::Filter does Hiker::Model {
 
         return @!posts.grep({$_<category> ~~ $category}).List;
     }
+
 }
